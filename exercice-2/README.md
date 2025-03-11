@@ -12,7 +12,6 @@ Ce projet permet de déployer une application web contenant :
 ├── client/               # Dossier contenant le code du client PHP
 │   ├── Dockerfile        # Dockerfile du service client
 │   ├── index.php         # Fichier PHP pour interroger MySQL
-│   ├── .htaccess         # Configuration Apache (optionnel)
 │
 ├── sql/init.sql          # Script d'initialisation de la base de données
 ├── data/                 # Dossier de stockage des données MySQL
@@ -41,9 +40,9 @@ cd <repo-name>
 ### 2 - Configuration de l'environnement
 Créer un fichier `.env.dev` pour l’environnement de développement :
 ```sh
-MYSQL_ROOT_PASSWORD=root
+MYSQL_ROOT_PASSWORD=<root_password>
 MYSQL_USER=db_client
-MYSQL_PASSWORD=password
+MYSQL_PASSWORD=<password>
 MYSQL_DATABASE=docker_doc_dev
 ENV=dev
 DEBUG=true
@@ -51,9 +50,9 @@ DEBUG=true
 
 Créer un fichier `.env.prod` pour l’environnement de production :
 ```sh
-MYSQL_ROOT_PASSWORD=a-strong-password
+MYSQL_ROOT_PASSWORD=<strong_password>
 MYSQL_USER=db_client
-MYSQL_PASSWORD=another-strong-password
+MYSQL_PASSWORD=<secure_password>
 MYSQL_DATABASE=docker_doc
 ENV=prod
 DEBUG=false
@@ -110,3 +109,8 @@ Le service client est accessible sur :
 
 ## Félicitations !
 Votre projet est maintenant prêt à être utilisé.
+
+
+## Sécurité des variables d'environnement
+Réponses aux questions posées : 
+ -> Privilégier les Docker Secrets pour la production parce que c'est dangereux pour l'intégrité & la sécurité du projet de laisser des variables d'environnements publiques.
