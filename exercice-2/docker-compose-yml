@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  database:
+    image: mysql:8
+    container_name: database
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./data:/var/lib/mysql
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+    networks:
+      - my_network
+
+  client:
+    build: ./client
+    container_name: php_client
+    restart: always
+    depends_on:
+      - database
+    environment:
+      DB_HOST: database
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      DB_NAME: ${MYSQL_DATABASE}
+      DB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "8088:80"
+    volumes:
+      - ./client:/var/www/html
+    networks:
+      - my_network
+
+networks:
+  my_network:
