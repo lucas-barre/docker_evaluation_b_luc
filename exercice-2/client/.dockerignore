@@ -1,0 +1,12 @@
+\*.log
+tmp/
+logs/
+
+.git
+.gitignore
+.DS_Store
+Thumbs.db
+
+node_modules/
+vendor/
+.env
