@@ -14,10 +14,14 @@ Ce projet permet de déployer une application web contenant :
 │   ├── index.php         # Fichier PHP pour interroger MySQL
 │   ├── .htaccess         # Configuration Apache (optionnel)
 │
-├── init.sql              # Script d'initialisation de la base de données
-├── .env.dev              # Variables d'environnement (Développement)
-├── .env.prod             # Variables d'environnement (Production)
-├── docker-compose.yml    # Configuration Docker Compose
+├── sql/init.sql          # Script d'initialisation de la base de données
+├── data/                 # Dossier de stockage des données MySQL
+├── backup/               # Dossier pour sauvegarde des dumps de base de données
+├── .env.dev              # Variables d'environnement pour le développement
+├── .env.prod             # Variables d'environnement pour la production
+├── docker-compose.yml    # Configuration principale de Docker Compose
+├── docker-compose.override.yml # Fichier pour surcharger les paramètres en mode dev
+├── docker-compose.prod.yml # Configuration Docker Compose pour la production
 └── README.md             # Documentation du projet
 ```
 
@@ -34,14 +38,15 @@ git clone <repo-url>
 cd <repo-name>
 ```
 
-### 2 - Configurer l'environnement
-
+### 2 - Configuration de l'environnement
 Créer un fichier `.env.dev` pour l’environnement de développement :
 ```sh
 MYSQL_ROOT_PASSWORD=root
 MYSQL_USER=db_client
 MYSQL_PASSWORD=password
 MYSQL_DATABASE=docker_doc_dev
+ENV=dev
+DEBUG=true
 ```
 
 Créer un fichier `.env.prod` pour l’environnement de production :
@@ -50,6 +55,8 @@ MYSQL_ROOT_PASSWORD=a-strong-password
 MYSQL_USER=db_client
 MYSQL_PASSWORD=another-strong-password
 MYSQL_DATABASE=docker_doc
+ENV=prod
+DEBUG=false
 ```
 
 ### 3 - Lancer les services
@@ -59,7 +66,7 @@ docker compose --env-file .env.dev up -d
 ```
 #### Environnement Production
 ```sh
-docker compose --env-file .env.prod up -d
+docker compose --env-file .env.prod -f docker-compose.prod.yml up -d
 ```
 
 ## Vérifications
@@ -99,9 +106,7 @@ docker compose exec database mysqldump -u db_client -p${MYSQL_PASSWORD} ${MYSQL_
 
 ## Accès au site Web
 Le service client est accessible sur :
-- **http://localhost:8080** (Développement)
-- **Configuration spécifique en production**
+- **http://localhost:8088** (Développement et Production)
 
 ## Félicitations !
-Le projet est maintenant prêt à être utilisé. 🎉
-```
+Votre projet est maintenant prêt à être utilisé.
