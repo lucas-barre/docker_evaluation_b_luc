@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  database:
+    image: mysql:8
+    container_name: database
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: a-strong-password
+      MYSQL_USER: db_client
+      MYSQL_PASSWORD: another-strong-password
+      MYSQL_DATABASE: docker_doc
+    volumes:
+      - ./data:/var/lib/mysql
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backup:/backup  # Volume ajouté pour sauvegarde des données
+    ports:
+      - "3306:3306"
+    networks:
+      - my_network
+
+  client:
+    build:
+      context: ./client
+    container_name: php_client
+    restart: always
+    depends_on:
+      - database
+    environment:
+      DB_HOST: database
+      DB_USER: db_client
+      DB_PASSWORD: another-strong-password
+      DB_NAME: docker_doc
+      DB_ROOT_PASSWORD: a-strong-password
+    ports:
+      - "8088:80"
+    volumes:
+      - ./client:/var/www/html
+    networks:
+      - my_network
+    command: "php -S 0.0.0.0:80 -t /var/www/html"
+
+networks:
+  my_network:
