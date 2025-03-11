@@ -1,0 +1,15 @@
+/data/
+client/vendor/
+client/node_modules/
+client/composer.lock
+client/.env
+.env
+
+logs/
+*.log
+
+tmp/
+*.tmp
+
+.DS_Store
+Thumbs.db
