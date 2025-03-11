@@ -6,7 +6,7 @@ services:
     container_name: database
     restart: always
     env_file:
-      - .env
+      - .env.${ENV}
     volumes:
       - ./data:/var/lib/mysql
       - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -28,6 +28,7 @@ services:
       DB_PASSWORD: ${MYSQL_PASSWORD}
       DB_NAME: ${MYSQL_DATABASE}
       DB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      ENV: ${ENV}
     ports:
       - "8088:80"
     volumes:
